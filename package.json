@@ -8,6 +8,10 @@
   },
   "author": "Allen7D",
   "license": "ISC",
+  "scripts": {
+    "start:dev": "nodemon --inspect-brk",
+    "start:prod": "node app.js"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "basic-auth": "^2.0.1",
@@ -26,9 +30,5 @@
   },
   "directories": {
     "test": "test"
-  },
-  "scripts": {
-    "start:dev": "nodemon --inspect-brk",
-    "start:prod": "node app.js"
   }
 }

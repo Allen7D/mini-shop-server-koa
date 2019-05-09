@@ -7,8 +7,8 @@
 </h4>
 
 * 学习慕课网[《纯正商业级应用－Node.js Koa2开发微信小程序服务端》](https://s.imooc.com/SlIXze6)
-* QQ 交流群 163801325（聊天、斗图、学习、交流，伸手党勿进），欢迎入群一同讨论
 * 感谢慕课网的[七月老师](https://www.imooc.com/t/4294850)
+* QQ 交流群 163801325（聊天、斗图、学习、交流，伸手党勿进），欢迎入群一同讨论
 <div align="center">
   <img alt="img" src="./media/qq_group_qr_code.jpg" width="250px">
   <div>👆QQ 扫码 👆</div>
