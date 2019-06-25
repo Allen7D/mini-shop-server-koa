@@ -4,14 +4,14 @@ const router = new Router({
     prefix: '/v1/classic'
 })
 
-router.get('/v1/classic/:id/latest', (ctx, next) => {
+router.get('/:id/latest', (ctx, next) => {
     if (true) {
         // global.errs.ParameterException() 等同 ParameterException
         const error = new ParameterException()
         throw error
     }
     ctx.body = {
-        key: 'classic'
+        key: 'classic' + ctx.params.id
     }
 })
 
