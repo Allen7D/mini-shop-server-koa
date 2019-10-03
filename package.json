@@ -1,19 +1,22 @@
 {
   "name": "island-server",
   "version": "1.0.0",
-  "description": "Allen7D学习Koa",
+  "description": "学习Koa & TS",
   "main": "app.js",
   "author": "Allen7D",
   "license": "ISC",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon --inspect-brk",
-    "start:prod": "node app.js"
+    "dev": "cross-env NODE_ENV=development nodemon -e js --exec 'node' app.js",
+    "serve": "pm2 start app.js --name='island-server'",
+    "stop": "pm2 delete island-server",
+    "commit": "git-cz",
+    "test": "nodemon test/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
+    "cross-env": "^6.0.0",
     "jsonwebtoken": "^8.4.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
@@ -28,5 +31,10 @@
   },
   "directories": {
     "test": "test"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3",
+    "commitizen": "^3.0.0",
+    "cz-conventional-changelog": "^2.1.0"
   }
 }
