@@ -5,7 +5,7 @@ const router = new Router({
     prefix: '/v1/classic'
 })
 
-router.get('/:id/latest', (ctx, next) => {
+router.get('/:id/latest', async (ctx, next) => {
     // const path = ctx.params // 路由参数
     // // 上下文请求头、上下文请求query参数、上下文请求体
     // const { headers, query, body }  = ctx.request
@@ -14,7 +14,7 @@ router.get('/:id/latest', (ctx, next) => {
     //     const error = new ParameterException()
     //     throw error
     // }
-    const validator = new PositiveIntegerValidator().validate(ctx)
+    const validator = await new PositiveIntegerValidator().validate(ctx)
     // const { id } = ctx.params
     const id = validator.get('path.id')
     ctx.body = {

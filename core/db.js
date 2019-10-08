@@ -16,12 +16,12 @@ const sequelize = new Sequelize(dbName, user, password, {
   dialect: 'mysql',
   host,
   port,
-  logging: true,  // 打印ORM所执行的SQL语句
+  logging: true,  // 打印 ORM所执行的 SQL语句
   timezone: '+08:00', // 设置时区
   define: {
     // create_time, update_time, delete_time
     timestamps: true,
-    paranoid: true, // 增加deletedAt
+    paranoid: true, // 增加 deletedAt
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     deletedAt: 'deleted_at',

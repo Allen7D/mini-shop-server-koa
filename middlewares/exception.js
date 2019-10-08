@@ -1,4 +1,4 @@
-const { HttpException } = require('../core/http-exception')
+const { HttpException, Success } = require('../core/http-exception')
 
 const catchError = async (ctx, next) => {
     try {
@@ -10,12 +10,19 @@ const catchError = async (ctx, next) => {
 
 function handleError(ctx, error) {
     const isHttpException = error instanceof HttpException
+    const isSuccess = error instanceof Success
     const isDev = global.config.environment === 'dev'
     if (isDev && !isHttpException) {
         throw error // 在开发环境，直接抛出未知异常
     }
-
-    if (isHttpException) {
+    if (isSuccess) {
+        ctx.body = {
+            data: error.data,
+            msg: error.msg,
+            error_code: error.errorCode,
+        }
+    }
+    else if (isHttpException) {
         ctx.body = {
             msg: error.msg,
             error_code: error.errorCode,

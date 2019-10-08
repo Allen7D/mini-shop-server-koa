@@ -1,4 +1,6 @@
 const { BaseValidator, Rule } = require('../../core/base-validator')
+const { User: UserModel } = require('../models/user')
+const { ClientTypeEnum } = require('../lib/enum')
 
 class PositiveIntegerValidator extends BaseValidator {
   constructor() {
@@ -32,13 +34,48 @@ class RegisterValidator extends BaseValidator {
   }
 
   validatePassword(vals) {
-    const psw1 = vals.body.password1
-    const psw2 = vals.body.password2
+    const { password1: psw1, password2: psw2 } = vals.body
     if (psw1 !== psw2) throw new Error('两个密码必须相同') 
+  }
+
+  async validateEmail(vals) {
+    const { email }  = vals.body
+    const user = await UserModel.findOne({
+      where: {
+        email
+      }
+    })
+    if (user) throw new Error('email 已存在')
+  }
+}
+
+class TokenValidator extends BaseValidator {
+  constructor() {
+    super()
+    this.account = [
+      new Rule('isLength', '不符合账号规则', {
+        min: 4, 
+        max: 32
+      })
+    ]
+    this.secret = [
+      new Rule('isOptional'),
+      new Rule('isLength', '至少6个字符', {
+        min: 6,
+        max: 128
+      })
+    ]
+  }
+
+  validateType(vals) {
+    const { type } = vals.body
+    if (!type) throw new Error('type是必填参数')
+    if (!ClientTypeEnum.isThisType(type)) throw new Error('type参数不合法')
   }
 }
 
 module.exports = {
   PositiveIntegerValidator,
-  RegisterValidator
+  RegisterValidator,
+  TokenValidator,
 }
