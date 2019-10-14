@@ -1,7 +1,7 @@
 class Scope {
   constructor() {
-    this.allow_api = []
-    this.allow_module = []
+    this.allowApi = []
+    this.allowModule = []
     this.forbidden = []
   }
 }
@@ -9,8 +9,8 @@ class Scope {
 class UserScope extends Scope {
   constructor() {
     super()
-    this.allow_api = ['v1.classic+getLatest']
-    this.allow_module = []
+    this.allowApi = ['v1.classic+getLatest']
+    this.allowModule = []
     this.forbidden = []
   }
 }
@@ -39,8 +39,8 @@ function isInScope(scopeName, endpoint) {
   const scope = new matchScope[scopeName]()
   const prefix = endpoint.split('+')[0]
   if (scope.forbidden.includes(endpoint)) return false
-  if (scope.allow_api.includes(endpoint)) return true
-  if (scope.allow_module.includes(prefix)) return true
+  if (scope.allowApi.includes(endpoint)) return true
+  if (scope.allowModule.includes(prefix)) return true
   return false
 }
 
