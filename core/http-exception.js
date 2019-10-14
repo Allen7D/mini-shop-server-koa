@@ -1,3 +1,4 @@
+// [常见的HTTP状态码](https://www.jianshu.com/p/369db1ba04ea)
 class HttpException extends Error {
     constructor(msg = '服务器异常', errorCode = 10000, code = 400) {
         super()
@@ -17,12 +18,23 @@ class ParameterException extends HttpException {
 }
 
 class Success extends HttpException {
-    constructor(data, msg, errorCode) {
+    constructor(data, errorCode, msg, code) {
         super()
         this.data = data || undefined
-        this.code = 200
-        this.msg = msg || 'ok'
         this.errorCode = errorCode || 0
+        switch (errorCode) {
+            case 1:
+                this.code = 201
+                this.msg = msg || '创建 | 更新成功'
+                break
+            case 2:
+                this.code = 202 // 代替204
+                this.msg = msg || '删除成功'
+                break
+            default:
+                this.code = code || 200
+                this.msg = msg || '请求成功'
+        }
     }
 }
 
@@ -35,6 +47,7 @@ class NotFound extends HttpException {
     }
 }
 
+// 登录失败(等同于)
 class AuthFailed extends HttpException {
     constructor(msg, errorCode) {
         super()
@@ -44,10 +57,21 @@ class AuthFailed extends HttpException {
     }
 }
 
+class Forbbiden extends HttpException {
+    constructor(msg, errorCode) {
+        super()
+        this.code = 403
+        this.msg = msg || '禁止访问'
+        this.errorCode = errorCode || 10006
+    }
+}
+
+
 module.exports = {
     HttpException,
-    ParameterException,
-    Success,
-    NotFound,
-    AuthFailed
+    ParameterException, // 参数错误
+    Success, // 请求成功
+    NotFound, // 资源未找到
+    AuthFailed, // 授权失败
+    Forbbiden, // 禁止访问
 }

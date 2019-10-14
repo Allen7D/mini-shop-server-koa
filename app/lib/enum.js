@@ -10,6 +10,17 @@ const ClientTypeEnum = {
   isThisType
 }
 
+const ScopeEnum = {
+  UserScope: 1, // 普通用户
+  1: 'UserScope',
+  AdminScope: 2, // 管理员
+  2: 'AdminScope',
+  SuperScope: 3, // 超级管理员
+  3: 'SuperScope',
+  isThisType
+}
+
 module.exports = {
-  ClientTypeEnum
+  ClientTypeEnum,
+  ScopeEnum
 }

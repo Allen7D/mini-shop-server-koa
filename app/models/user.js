@@ -1,18 +1,25 @@
 const bcrypt = require('bcryptjs')
-const { Sequelize, Model } = require('sequelize')
+const { Sequelize } = require('sequelize')
 
-const { sequelize } = require('../../core/db')
+const { sequelize, BaseModel } = require('../../core/db')
+const { ScopeEnum } = require('../lib/enum')
+const { generateToken } = require('../../core/util')
 
-class User extends Model{
+class User extends BaseModel {
   static async verifyByEmail(email, password) {
-    const user = await User.findOne({
+    const user = await User.findOneOr404({
       where: {
         email
       }
-    })
-    if (!user) throw new global.errs.AuthFailed('用户不存在')
+    }, new global.errs.AuthFailed('用户不存在'))
+
     if (!user.checkPassword(password)) throw new global.errs.AuthFailed('密码不正确')
-    return user
+    const token = generateToken(user.id, user.scope)
+    return token
+  }
+  // auth对应的权限scope
+  get scope() {
+    return ScopeEnum[this.auth]
   }
 
   static async verifyByWx(code, ...args) {
@@ -35,7 +42,7 @@ User.init({
     type: Sequelize.STRING(128),
     unique: true,
   },
-  password: { 
+  password: {
     type: Sequelize.STRING,
     set(val) {
       const salt = bcrypt.genSaltSync(10) // 10表示生成密码的成本
@@ -45,8 +52,12 @@ User.init({
   },
   openid: {
     type: Sequelize.STRING(64),
-    unique: true
-  }
+    unique: true,
+  },
+  auth: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1, // 1为user(普通用户)， 2为admin(普通管理员)， 3为super(超级管理员)
+  },
 }, {
   sequelize,
   tableName: 'user' // 自定义表名

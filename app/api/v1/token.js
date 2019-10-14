@@ -8,6 +8,7 @@ const router = new Router({
   prefix: '/v1/token'
 })
 
+// 生成「token令牌」
 router.post('/', async (ctx, next) => {
   const validator = await new TokenValidator().validate(ctx)
   const { account, secret, type } = validator.get('body')
@@ -15,8 +16,8 @@ router.post('/', async (ctx, next) => {
     [ClientTypeEnum.USER_EMAIL]: UserModel.verifyByEmail, // 邮箱&密码登录
     [ClientTypeEnum.USER_WX]: UserModel.verifyByWx, // 微信小程序登录
   }
-  const user = await promise[type](account, secret)
-  throw new global.errs.Success(user)
+  const token = await promise[type](account, secret)
+  throw new global.errs.Success({token})
 })
 
 module.exports = router

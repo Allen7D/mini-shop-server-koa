@@ -1,7 +1,7 @@
 /**
  * 中文简要教程 https://itbilu.com/nodejs/npm/VkYIaRPz-.html
  */
-const Sequelize = require('sequelize')
+const { Sequelize, Model } = require('sequelize')
 const {
   database: {
     dbName,
@@ -33,6 +33,18 @@ sequelize.sync({
   // force: true // 强制删除 & 重建表
 })
 
+class BaseModel extends Model {
+  static async findOneOr404(opts, e, errorCode, msg) {
+    const result = await this.findOne(opts)
+    if (!result) {
+      if (e) throw e
+      throw new global.errs.NotFound()
+    }
+    return result
+  }
+}
+
 module.exports = {
-  sequelize
+  sequelize,
+  BaseModel
 }

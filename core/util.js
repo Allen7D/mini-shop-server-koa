@@ -39,21 +39,38 @@ const findMembers = function (instance, {
     return _find(instance)
 }
 
-const generateToken = function(uid, scope){
-    const secretKey = global.config.security.secretKey
-    const expiresIn = global.config.security.expiresIn
+const generateToken = function (uid, scope) {
+    const { secretKey, expiresIn } = global.config.security
     const token = jwt.sign({
         uid,
         scope
-    },secretKey,{
+    }, secretKey, {
         expiresIn
     })
     return token
 }
 
+const verifyToken = function (token) {
+    const { secretKey } = global.config.security
+    let errMsg = 'token 不合法'
+    try {
+        var { uid, scope } = jwt.verify(token, secretKey)
+    } catch (error) {
+        // token 不合法
+        if (error.name === 'JsonWebTokenError') errMsg = 'token 不合法'
+        // token 过期
+        if (error.name === 'TokenExpiredError') errMsg = 'token 过期'
+        // token 为空
+        if (token === '') errMsg = 'token 为空'
+        // 统一抛出
+        throw new global.errs.Forbbiden(errMsg)
+    }
+    return { uid, scope }
+}
 
 
 module.exports = {
     findMembers,
     generateToken,
+    verifyToken
 }

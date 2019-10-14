@@ -21,6 +21,7 @@ function handleError(ctx, error) {
             msg: error.msg,
             error_code: error.errorCode,
         }
+        ctx.status = error.code
     }
     else if (isHttpException) {
         ctx.body = {
