@@ -49,7 +49,7 @@ class RegisterValidator extends BaseValidator {
   }
 }
 
-class TokenValidator extends BaseValidator {
+class LoginValidator extends BaseValidator {
   constructor() {
     super()
     this.account = [
@@ -74,8 +74,18 @@ class TokenValidator extends BaseValidator {
   }
 }
 
+class TokenValidator extends BaseValidator { 
+  constructor() {
+    super()
+    this.token = [
+      new Rule('isLength', '不为空', { min: 1 })
+    ]
+  }
+}
+
 module.exports = {
   PositiveIntegerValidator,
   RegisterValidator,
+  LoginValidator,
   TokenValidator,
 }
