@@ -3,10 +3,9 @@ function isThisType(val) {
 }
 
 const ClientTypeEnum = {
-  USER_MINA: 100,
+  USER_WX: 100,
   USER_EMAIL: 101,
   USER_MOBILE: 102,
-  ADMIN_EMAIL: 200,
   isThisType
 }
 

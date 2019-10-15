@@ -4,6 +4,7 @@ const { Sequelize } = require('sequelize')
 const { sequelize, BaseModel } = require('../../core/db')
 const { ScopeEnum } = require('../lib/enum')
 const { generateToken } = require('../../core/util')
+const { WxToken } = require('../services/wxToken')
 
 class User extends BaseModel {
   static async verifyByEmail(email, password) {
@@ -13,21 +14,35 @@ class User extends BaseModel {
       }
     }, new global.errs.AuthFailed('用户不存在'))
 
-    if (!user.checkPassword(password)) throw new global.errs.AuthFailed('密码不正确')
-    const token = generateToken(user.id, user.scope)
-    return token
+    user.checkPassword(password)
+    return user.token
   }
   // auth对应的权限scope
   get scope() {
     return ScopeEnum[this.auth]
   }
 
+  get token() {
+    return generateToken(this.id, this.scope)
+  }
+
   static async verifyByWx(code, ...args) {
-    return {}
+    const wt = new WxToken(code)
+    const openid = await wt.getOpenid()
+    // 是否已注册
+    let user = await UserModel.findOne({
+      where: {
+        openid
+      }
+    })
+    // 未找到用户，则新增用户
+    if (!user) user = await UserModel.create({ openid })
+    return user.token
   }
 
   checkPassword(raw) {
-    return bcrypt.compareSync(raw, this.password)
+    const result = bcrypt.compareSync(raw, this.password)
+    if (!result) throw new global.errs.AuthFailed('密码不正确')
   }
 }
 
