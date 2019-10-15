@@ -1,7 +1,5 @@
 const util = require('util')
 const axios = require('axios')
-const { User: UserModel } = require('../models/user')
-const { generateToken } = require('../../core/util')
 const { appID, appSecret, loginUrl } = global.config.wx
 
 class WxToken {
@@ -17,8 +15,8 @@ class WxToken {
 
   parseOutOpenid(result) {
     if (result.status !== 200) throw new global.errs.AuthFailed('openid获取失败')
-    const { errcode, openid } = result.data
-    if (errcode !== 0) throw new global.errs.AuthFailed('openid获取失败: code无效')
+    const { errcode, errmsg, openid } = result.data
+    if (errcode) throw new global.errs.AuthFailed(`openid获取失败:${errmsg}`)
     
     return openid
   }

@@ -54,7 +54,8 @@ const verifyToken = function (token) {
     const { secretKey } = global.config.security
     let errMsg = 'token 不合法'
     try {
-        var { uid, scope } = jwt.verify(token, secretKey)
+        // 用户ID, 用户权限, 创建时间, 有效期
+        var { uid, scope, iat: create_at, exp: expire_in } = jwt.verify(token, secretKey)
     } catch (error) {
         // token 不合法
         if (error.name === 'JsonWebTokenError') errMsg = 'token 不合法'
@@ -65,7 +66,7 @@ const verifyToken = function (token) {
         // 统一抛出
         throw new global.errs.Forbbiden(errMsg)
     }
-    return { uid, scope }
+    return { uid, scope, create_at, expire_in } 
 }
 
 

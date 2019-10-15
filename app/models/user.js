@@ -30,13 +30,13 @@ class User extends BaseModel {
     const wt = new WxToken(code)
     const openid = await wt.getOpenid()
     // 是否已注册
-    let user = await UserModel.findOne({
+    let user = await User.findOne({
       where: {
         openid
       }
     })
     // 未找到用户，则新增用户
-    if (!user) user = await UserModel.create({ openid })
+    if (!user) user = await User.create({ openid })
     return user.token
   }
 
