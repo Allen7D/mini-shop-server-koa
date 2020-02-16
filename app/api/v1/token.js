@@ -15,7 +15,7 @@ router.post('/', async (ctx, next) => {
   const { account, secret, type } = validator.get('body')
   const promise = {
     [ClientTypeEnum.USER_EMAIL]: UserModel.verifyByEmail, // 邮箱&密码登录
-    [ClientTypeEnum.USER_WX]: UserModel.verifyByWx, // 微信小程序登录
+    [ClientTypeEnum.USER_WX_MINA]: UserModel.verifyByWxMina, // 微信小程序登录
   }
   const token = await promise[type](account, secret)
   throw new global.errs.Success({token})

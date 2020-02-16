@@ -3,9 +3,12 @@ function isThisType(val) {
 }
 
 const ClientTypeEnum = {
-  USER_WX: 100,
-  USER_EMAIL: 101,
-  USER_MOBILE: 102,
+	USER_EMAIL:100, // 邮箱登录
+	USER_MOBILE: 101, // 手机登录
+	// 微信
+	USER_WX_MINA: 200, // 微信小程序
+	USER_WX_OPEN: 201, 	// 微信第三方登录
+	USER_WX: 202, // 微信公众号
   isThisType
 }
 

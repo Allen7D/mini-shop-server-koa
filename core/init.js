@@ -31,6 +31,11 @@ class InitManager {
                 this.app.use(obj.routes())
             }
         }
+        /** requireDirectory的使用，其参数: 
+         *  第1个: 固定参数module
+         *  第2个: 要加载的模块的文件路径
+         *  第3个：每次加载一个参数执行的函数
+        */
         requireDirectory(module, routerPath, {
             visit: loadModule
         })

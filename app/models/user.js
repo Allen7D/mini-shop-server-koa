@@ -26,7 +26,7 @@ class User extends BaseModel {
     return generateToken(this.id, this.scope)
   }
 
-  static async verifyByWx(code, ...args) {
+  static async verifyByWxMina(code, ...args) {
     const wt = new WxToken(code)
     const openid = await wt.getOpenid()
     // 是否已注册

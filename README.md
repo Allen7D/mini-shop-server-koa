@@ -17,12 +17,3 @@
 
 ## ChangeLog
 各版本的完善内容([release notes](https://github.com/Allen7D/mini-shop-server-koa/releases))
-
-### 买课优惠码(8.8折)
-> PC端请复制对应的链接; 移动端可以扫描二维码
-
-1. 《纯正商业级应用－Node.js Koa2开发微信小程序服务端》- [优惠链接](https://s.imooc.com/SlIXze6)
-<div align="center">
-    <img src="./media/koa_poster.png" width="300px">
-</div>
-
